@@ -19,6 +19,7 @@ import { useNavigate,useLocation } from 'react-router-dom';
 import {toast} from 'react-toastify';
 import UploadWidget from '../components/UploadComponents';
 
+
 const AddProduct = () => {
   const location = useLocation();
   const productId = location.pathname.split('/')[3];
@@ -34,6 +35,7 @@ const AddProduct = () => {
   const prodSel = useSelector((state) => state.product);
   const [colors,setColors] = React.useState([]);
   
+  const [size,setSize] = React.useState([]);
   console.log(uploadedFiles);
 
   React.useEffect(()=> {
@@ -44,7 +46,7 @@ const AddProduct = () => {
   React.useEffect(() => {
       if(productId) {
        dispatch(getProduct(productId));
-     
+        formik.values.size = prodSel?.product?.size;
         formik.values.brand =prodSel?.product?.brand;
         formik.values.title = prodSel?.product?.title;
         formik.values.category = prodSel?.product?.category;
@@ -66,6 +68,7 @@ const AddProduct = () => {
     price : Yup.number().required('Price is required'),
     brand: Yup.string().required('Brand is required'),
     category: Yup.string().required('Category is required'),
+    size : Yup.string().required('Size is required'),
     color: Yup
     .array()
     .required('Color is required'),
@@ -81,6 +84,7 @@ const AddProduct = () => {
       brand: prodSel?.product?.brand || '',
       category: prodSel?.product?.category || '',
       color: '',
+      size : '',
       tag : prodSel?.product?.tag  ||  '',
       quantity: prodSel?.product?.quantity || '',
     },
@@ -255,7 +259,7 @@ const animatedComponents = makeAnimated();
                   className="mb-4 mt-1"
                   placeholder="Select Colors"
                   options={options} 
-                  value={colors}
+                  value={formik.values.color}
                   closeMenuOnSelect={false}
                   components={animatedComponents}
                   isMulti
@@ -290,8 +294,21 @@ const animatedComponents = makeAnimated();
                   <div className="error">
                     {formik.touched.quantity && formik.errors.quantity}
                   </div>
+                  <Input 
+                  type="text"
+                  name="size" 
+                  label="Size" 
+                  placeholder="Size"
+                  onChange={formik.handleChange('size')}
+                  onBlur={formik.handleBlur('size')}
+                  val={formik.values.size} 
+                  id="prod_size"/>
+                  <p className='text-warning'>write using comma if you want to write multiple</p>
+                  <div className="error">
+                    {formik.touched.size && formik.errors.size}
+                  </div>
                 <div className="bg-white border p-5 text-center">
-                  <UploadWidget setUploadedFiles={setUploadedFiles} name="product"/>
+                  <UploadWidget isRectangle={false} setUploadedFiles={setUploadedFiles} name="product"/>
                 
                 
                 </div>

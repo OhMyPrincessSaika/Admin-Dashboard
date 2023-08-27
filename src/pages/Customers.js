@@ -3,30 +3,7 @@ import {Table} from 'antd';
 import { useDispatch,useSelector
  } from 'react-redux';
  import { getAllUsers } from '../features/customers/customerSlice';
-const dataSource = [
-    {
-      key: '1',
-      name: 'Mike',
-      product: 'Lenovo L340 Gaming',
-      status : 'Pending',
-      no : '1'
-    },
-    {
-      key: '2',
-      name: 'Hsu Mon',
-      product: 'Lenovo L340 Gaming',
-      status : 'Cash On Delivery',
-      no : '2'
-    },
-    {
-      key: '3',
-      name: 'Inzali',
-      product: 'Lenovo L340 Gaming',
-      status : 'Completed',
-      no : '3'
-    },
-   
-  ];
+
   const columns = [
     {
       title: 'No',
@@ -39,20 +16,37 @@ const dataSource = [
       key: 'name',
     },
     {
-      title: 'Product',
-      dataIndex: 'product',
-      key: 'product',
+      title: 'Email',
+      dataIndex: 'email',
+      key: 'email',
     },
     {
-      title : 'Status',
-      dataIndex :'status',
-      key : 'status'
+      title : 'Phone Number',
+      dataIndex :'phone',
+      key : 'phone'
+    },
+    {
+      title : 'Admin',
+      dataIndex : 'admin',
+      key : 'admin'
     }
   ];
   
   const Customers = () => {
     const dispatch = useDispatch();
-    // const selector = useSelector((state) => state.customers);
+    const cusSel = useSelector((state) => state.customer.customers);
+    const dataSource = [];
+    for(let i=0; i< cusSel?.length; i++) {
+      const obj = {};
+      obj.name = cusSel[i]?.firstname + " " + cusSel[i]?.lastname;
+      obj.email = cusSel[i]?.email;
+      obj.phone = cusSel[i]?.phonenum;
+      obj.no = i+1;
+      obj.key = cusSel[i]?._id;
+      obj.admin = cusSel[i]?.isAdmin ? 'admin' : '-';
+      dataSource.push(obj);
+    }
+
     React.useEffect(
       () => {
         dispatch(getAllUsers())

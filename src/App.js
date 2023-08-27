@@ -1,21 +1,27 @@
 import './App.css';
 import {BrowserRouter as Router,Routes,Route, Navigate} from 'react-router-dom';
 import { Dashboard,Login,Enquiry,ViewOrder,
-  BlogList,BlogCatList,Orders,Customers,ColorList,CategoryList,
+  BlogList,BlogCatList,Orders,Customers,ColorList,CategoryList,Register,
+  Profile,
   BrandList,ProductList,AddBlog,AddBlogCat, AddColor, AddCat, AddBrand, AddProduct} from './pages';
 import MainLayout from './components/MainLayout'
 import CouponList from './pages/CouponList';
 import OpenRoute from './components/OpenRoute';
 import AddCoupon from './pages/AddCoupon';
 import EnquiryDetails from './pages/EnquiryDetails';
-function App() {
+import AddBanner from './pages/AddBanner';
+import Banner from './pages/Banner';
+import AddBannerCat from './pages/AddBannerCat';
+import BannerCat from './pages/BannerCat';
+ function App() {
   return (
       <Router>
         <Routes>
           <Route path="/" element={ <Navigate to="/login"/>}>
-           
+        
           </Route>
           <Route path="/login" element={<OpenRoute><Login/></OpenRoute>}/>
+          <Route path="/register" element={<OpenRoute><Register/></OpenRoute>}/>
           <Route path="/admin" element={<MainLayout/>}>
             <Route index element={<Dashboard/>}/>
             <Route path="/admin/enquiries" element={<Enquiry/>}/>
@@ -34,7 +40,7 @@ function App() {
             <Route path="brand-list" element={<BrandList/>}/>
             <Route path="coupon-list" element={<CouponList/>}/>
             <Route path="coupon" element={<AddCoupon/>}/>
-            <Route path="coupon/:id" element={<AddCoupon/>}/>
+            <Route path="coupon/:id" element={<AddCoupon/>}/>   
             <Route path="brand" element={<AddBrand/>}/>
             <Route path="brand/:id" element={<AddBrand/>}/>
             <Route path="product-list" element={<ProductList/>}/>
@@ -44,6 +50,13 @@ function App() {
             <Route path="blog/:id" element={<AddBlog/>}/>
             <Route path="blog-category" element={<AddBlogCat/>}/>
             <Route path="blog-category/:id" element={<AddBlogCat/>}/>
+            <Route path="banner" element={<AddBanner/>}/>
+            <Route path="banner/:id" element={<AddBanner/>}/>
+            <Route path="banner-list" element={<Banner/>}/>
+            <Route path='banner-cat' element={<AddBannerCat/>}/>
+            <Route path='banner-cat/:id' element={<AddBannerCat/>}/>
+            <Route path="banner-cat-list" element={<BannerCat/>}/>
+            <Route path="profile" element={<Profile/>}/>
           </Route>
         </Routes>
       </Router>

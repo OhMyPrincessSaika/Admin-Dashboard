@@ -11,7 +11,11 @@ import pCategorySlice from '../features/pcategory/pCategorySlice'
 import blogSlice from '../features/blog/blogSlice'
 import blogcatSlice from '../features/blog-cat/blogcatSlice'
 import couponSlice from '../features/coupon/couponSlice';
+import bannerSlice from '../features/banner/bannerSlice';
+import bannerCatSlice from '../features/banner-cat/bannerCatSlice';
+import adminSlice from '../features/admin/adminSlice';
 export const store = configureStore({
+    
     reducer : {
     'auth' : authSlice,
     'customer' : customerSlice,
@@ -25,6 +29,9 @@ export const store = configureStore({
     'delete' : deleteSlice.reducer,
     'blog' : blogSlice,
     'blogcat' : blogcatSlice,
-    'coupon' : couponSlice
+    'coupon' : couponSlice,
+    'banner' : bannerSlice,
+    'banner_cat': bannerCatSlice,
+    'admin' : adminSlice
 },
 });

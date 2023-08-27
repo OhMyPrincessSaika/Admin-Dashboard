@@ -18,27 +18,43 @@ const getOrdersByUserId = async(id) => {
         console.log(err);
     }
 }
-const getMonthlyOrderIncome = async() => {
+const getMonthlyOrderIncome = async(token) => {
     try {
-        const response = await axios.get(`${base_url}/order/admin/monthly-income`,config);
+        const response = await axios.get(`${base_url}/order/admin/monthly-income`,{
+            headers : {
+                Authorization : `Bearer ${token}`,
+                Accept : 'application/json'
+            }
+        });
         return response.data;
     }catch(err) {
         console.log(err);
     }
 }
 
-const getYearlyOrderIncome = async() => {
+const getYearlyOrderIncome = async(token) => {
     try {
-        const response = await axios.get(`${base_url}/order/admin/yearly-income`,config);
+        const response = await axios.get(`${base_url}/order/admin/yearly-income`,{
+            headers : {
+                Authorization : `Bearer ${token}`,
+                Accept : 'application/json'
+            }
+        });
+
         return response.data;
     }catch(err) {
         console.log(err);
     }
 }
 
-const getAllOrders = async() => {
+const getAllOrders = async(token) => {
     try {
-        const response = await axios.get(`${base_url}/order/all/orders`,config)
+        const response = await axios.get(`${base_url}/order/all/orders`,{
+            headers : {
+                Authorization : `Bearer ${token}`,
+                Accept : 'application/json'
+            }
+        })
         return response.data;
     }catch(err) {
         console.log(err);

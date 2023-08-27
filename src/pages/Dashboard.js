@@ -1,19 +1,33 @@
 import React from 'react'
-import {BsArrowDownRight,BsArrowUpRight} from 'react-icons/bs';
 import { Column } from '@ant-design/plots';
 import {Table} from 'antd';
 import {useDispatch,useSelector} from 'react-redux';
 import { getAllOrders, getMonthlyOrderIncome,getYearlyOrderIncome } from '../features/order/orderSlice';
+import { useStateContext } from '../app/ContextProvider';
 const Dashboard = () => {
   const dispatch = useDispatch();
   const [monthlyData , setMonthlyData] = React.useState([]);
   const [monthlySale, setMonthlySale] = React.useState([]);
   const [allOrders,setAllOrders] = React.useState([]);
+  const token = useSelector((state) => state?.auth?.user?.token);
+  const {setAdmin,setToken} = useStateContext();
   React.useEffect(() => {
-    dispatch(getMonthlyOrderIncome());
-    dispatch(getYearlyOrderIncome());
-    dispatch(getAllOrders());
-  },[]);
+
+    if(token === undefined) {
+       let user = JSON.parse(localStorage.getItem('admin'));
+       setAdmin(user?.admin);
+       dispatch(getMonthlyOrderIncome(user?.token));
+       dispatch(getYearlyOrderIncome(user?.token));
+       dispatch(getAllOrders(user?.token));
+    }else {
+      let user = JSON.parse(localStorage.getItem('admin'));
+      setAdmin(user?.admin);
+      setToken(user?.token);
+      dispatch(getMonthlyOrderIncome(token));
+      dispatch(getYearlyOrderIncome(token));
+      dispatch(getAllOrders(token));
+    }
+  },[token]);
   const monthlySel = useSelector((state) => state.order.monthlyData);
   const yearlySel = useSelector((state) => state.order.yearlyData)
   const ordersSel  = useSelector((state) => state.order.allOrders);
@@ -22,11 +36,11 @@ const Dashboard = () => {
     for(let i=0; i<ordersSel?.length; i++) {
       data.push({
         key: i,
-        name: ordersSel[i].user.firstname + ' ' + ordersSel[i].user.lastname,
-        product_count: ordersSel[i].orderItems?.length,
-        total_price : ordersSel[i].totalPrice,
-        total_price_after_discount:ordersSel[i].totalPriceAfterDiscount,
-        status : ordersSel[i].orderStatus,
+        name: ordersSel[i]?.user?.firstname + ' ' + ordersSel[i]?.user?.lastname,
+        product_count: ordersSel[i]?.orderItems?.length,
+        total_price : ordersSel[i]?.totalPrice,
+        total_price_after_discount:ordersSel[i]?.totalPriceAfterDiscount,
+        status : ordersSel[i]?.orderStatus,
         no : i
       
     })
@@ -54,7 +68,6 @@ const Dashboard = () => {
        salesArr.push({month : month[element?._id?.month],sales : element?.count})
        
     }
-    console.log(data);
     setMonthlyData(data);
     setMonthlySale(salesArr)
   },[monthlySel])
@@ -128,17 +141,7 @@ const Dashboard = () => {
     // minColumnWidth: 50,
     // maxColumnWidth: 70,
   };
-  const dataSource = [
-    {
-      key: '1',
-      name: 'Mike',
-      product_count: 'Lenovo L340 Gaming',
-      total_price : '',
-      total_price_after_discount:'',
-      status : 'Pending',
-      no : '1'
-    }
-  ];
+  
   
   const columns = [
     {
@@ -180,7 +183,7 @@ const Dashboard = () => {
           style={{backgroundColor:'#f5f5f7'}}
           className="d-flex justify-content-between align-items-end p-3 rounded-3 flex-grow-1 text-white">
               <div className="d-flex flex-column  justify-content-between align-items-start" style={{height:'80px'}}>
-                <p className="desc">Total Income</p> <h4 className="mb-0 subtitle">$ {yearlySel[0]?.amount}</h4>
+                <p className="desc">Total Income</p> <h4 className="mb-0 subtitle">$ {yearlySel &&  yearlySel[0]?.amount ? yearlySel[0]?.amount : 0}</h4>
               </div>
               <div className="d-flex flex-column  justify-content-between align-items-end" style={{height:'80px'}}>
                 {/* <h6 className="green"><BsArrowDownRight/>32%</h6> */}
@@ -192,7 +195,7 @@ const Dashboard = () => {
           style={{backgroundColor:'#f5f5f7'}}
           className="d-flex justify-content-between align-items-end  p-3 rounded-3 flex-grow-1 text-white">
               <div className="d-flex flex-column  justify-content-between align-items-start" style={{height:'80px'}}>
-                <p className="desc">Total Sales</p> <h4 className="mb-0 subtitle">{yearlySel[0]?.count}</h4>
+                <p className="desc">Total Sales</p> <h4 className="mb-0 subtitle">{yearlySel && yearlySel[0]?.count ? yearlySel[0]?.count : 0}</h4>
               </div>
               <div className="d-flex flex-column  justify-content-between align-items-end" style={{height:'80px'}}>
                 <div></div>

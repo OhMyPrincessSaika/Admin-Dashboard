@@ -13,7 +13,7 @@ const getAllProducts =async() => {
 }
 const createProduct = async(data) => {
     try{
-        const response = await axios.post(`${base_url}product`,data,config);
+        const response = await axios.post(`http://localhost:5000/product`,data,config);
         return response.data;
     }catch(err) {
         console.log(err);
@@ -44,10 +44,20 @@ const deleteProduct = async(id) => {
         console.log(err);
     }
 }
+
+const addSize = async(props) => {
+    const {size,id} = props;
+    try {   
+        return await axios.post(`http://localhost:5000/product/size/${id}`,size);
+    }catch(err) {
+        console.log(err);
+    }
+}
 export const productService = {
     getAllProducts,
     createProduct,
     getProduct,
     updateProduct,
-    deleteProduct
+    deleteProduct,
+    addSize
 }

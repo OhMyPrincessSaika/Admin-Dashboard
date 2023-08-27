@@ -35,7 +35,7 @@ const EnquiryDetails = () => {
             dispatch(updateEnquiry(data));
             setTimeout (() => {
                navigate('/admin/enquiries');
-            },300)
+            },3000)
 
          }
       }

@@ -85,7 +85,7 @@ const CouponList = () => {
        setTimeout(() => {
         dispatch(getAllCoupons());
         setLoading(false);
-       },1000)
+       },3000)
      }catch(err) {
        toast.error('something went wrong!');
        setLoading(false);

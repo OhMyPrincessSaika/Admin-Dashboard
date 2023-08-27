@@ -3,8 +3,9 @@ import { base_url } from '../../utils/base_url';
 
 const login = async(userData) => {
     try {
-        const response = await axios.post(`${base_url}login`,userData);
-        localStorage.setItem('user',JSON.stringify(response.data));
+        //TODO: change dynamic url
+        const response = await axios.post(`http://localhost:5000/admin-login`,userData);
+        localStorage.setItem('admin',JSON.stringify(response.data));
         return response.data;
     }catch(err) {
         console.log(err);
@@ -12,9 +13,20 @@ const login = async(userData) => {
     }
 }
 
+const register = async(data) => {
+    try {
+        const response = await axios.post(`http://localhost:5000/admin-register`,data);
+        localStorage.setItem('admin',JSON.stringify(response.data));
+        return response.data;
+    }catch(err) {
+        console.log(err);
+        throw new Error('Error');
+    }
+}
 
 const authService = {
     login,
+    register
 }
 
 export default authService;

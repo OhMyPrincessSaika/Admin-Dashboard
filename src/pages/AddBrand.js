@@ -48,7 +48,7 @@ const AddBrand = () => {
               dispatch(resetState())
               navigate('/admin/brand-list')
               setLoading(false);
-            },300)
+            },3000)
         }catch(err) {
             toast.error(err.message);
         }
@@ -64,7 +64,7 @@ const AddBrand = () => {
               dispatch(resetState())
               navigate('/admin/brand-list')
               setLoading(false);
-            },300)
+            },3000)
           }else {
             toast.error('something went wrong!')
             setLoading(false)

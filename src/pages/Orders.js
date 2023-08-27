@@ -4,7 +4,7 @@ import { getAllOrders, updateOrderStatus } from '../features/order/orderSlice';
 import {useDispatch,useSelector} from 'react-redux';
 import { Link } from 'react-router-dom';
 import { resetState } from '../utils/resetState';
-
+import { useStateContext } from '../app/ContextProvider';
   const columns = [
     {
       title: 'No',
@@ -40,11 +40,20 @@ import { resetState } from '../utils/resetState';
 
   const Orders = () => {
   const dispatch = useDispatch();
-
+  const {token} = useStateContext();
+ 
+ 
   React.useEffect(()=> {
     dispatch(resetState())
-    dispatch(getAllOrders());
-  },[])
+    if(token === undefined) {
+      let user = JSON.parse(localStorage.getItem('admin'));
+      dispatch(getAllOrders(user.token
+        
+        ));
+    }else {
+      dispatch(getAllOrders(token));
+    }
+  },[token])
   const orderSel = useSelector((state) => state.order.allOrders);
   const [orders,setOrders] = React.useState([]);
   

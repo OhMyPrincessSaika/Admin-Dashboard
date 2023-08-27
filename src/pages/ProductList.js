@@ -16,6 +16,10 @@ import { deleImages } from '../features/upload/uploadSlice';
       dataIndex: 'no',
     },
     {
+      title : 'ProductId',
+      dataIndex : '_id'
+    },
+    {
       title: 'Product',
       dataIndex: 'product',
       sorter : (a,b) =>  a.product.length-b.product.length
@@ -69,6 +73,7 @@ const ProductList = () => {
     const data = selector?.map((product,i) => {
       return {
         'key' : i,
+        '_id' : product._id,
         'no' : i+1,
         'product' : product.title,
         'brand' : product.brand,
@@ -114,7 +119,7 @@ const ProductList = () => {
           dispatch(resetState());
           dispatch(getAllProducts());
           setLoading(false);
-        },300);
+        },3000);
       }
       
     }catch(err) {

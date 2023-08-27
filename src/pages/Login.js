@@ -1,22 +1,33 @@
 import React from 'react'
-import { Link } from 'react-router-dom';
 import Input from '../components/Input';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import  {useDispatch,useSelector} from 'react-redux';
 import { login } from '../features/auth/authSlice';
-import { useNavigate ,redirect} from 'react-router-dom';
-import { resetState } from '../utils/resetState';
-import Loading from '../components/Loading';
-import bgImage from '../images/bg.jpg';
+import { useNavigate } from 'react-router-dom';
+
 import decode from 'jwt-decode'
 const Login = () => {
-  const [loading,setLoading] = React.useState(false);
+ 
   const navigate = useNavigate();
-  const [authorize,setAuthorize] = React.useState(false);
-  const selector = useSelector((state) => state.auth)
   const dispatch = useDispatch();
-  const {user,isLoading,isError,isSucceed,message} = selector;
+  
+  const userSel = useSelector((state) => state.auth.user);
+  React.useEffect(() => {
+    if(userSel?.token !== undefined) {
+      const token = JSON.parse(localStorage.getItem('admin').token);
+      if(token) {
+         const decodedToken = decode(token);
+         const currentTime = Date.now()/ 1000;
+         if(decodedToken.exp < currentTime) {
+          setErr('Token is expired')
+         }else {
+          navigate('/admin',{replace:true});
+         }
+        
+      }
+    }
+  },[userSel]);
   const [err,setErr] = React.useState('')
  
   let schema = Yup.object().shape({
@@ -29,10 +40,9 @@ const Login = () => {
       password : ''
     },
     onSubmit: async(values) => {
-      setLoading(true);
+      
       try {
         await dispatch(login(values)).unwrap();
-        redirect('/admin/')
       }catch(err) {
         console.log(err)
         setErr(err.message);
@@ -42,31 +52,26 @@ const Login = () => {
     validationSchema : schema
   });
   
-  React.useEffect(()=> {
-    const user = JSON.parse(localStorage.getItem('user'));
-    if(user) {
+  // React.useEffect(()=> {
+  //   const user = JSON.parse(localStorage.getItem('admin'));
+  //   if(user) {
      
-      const decodedToken = decode(user.token);
-      const currentTime = Date.now() / 1000;
-      if(decodedToken.exp < currentTime) {
-        console.log('token is expired');
-        setAuthorize(false);
-      }else {
-        if(isSucceed && !isError && !isLoading) {
-          setAuthorize(true);
-          setTimeout(() => {
-            navigate('/admin',{replace : 'true'})
-          },300)
-        }else if(isLoading) {
-          setAuthorize(true);
-        }else if(isError) {
-          setAuthorize(false);
-        }
-      }
+  //     const decodedToken = decode(user.token);
+  //     const currentTime = Date.now() / 1000;
+  //     if(decodedToken.exp < currentTime) {
+  //       console.log('token is expired');
+       
+  //     }else {
+        
+  //         setTimeout(() => {
+  //           navigate('/admin',{replace : 'true'})
+  //         },300)
+        
+  //     }
 
-    }
+  //   }
  
-  },[user,isSucceed,isError,isLoading])
+  // },[userSel])
   return (
     <div className=" py-5 d-flex justify-content-center align-items-center" 
     style={{minHeight : "100vh",background:'linear-gradient(90deg,yellow,gold,rgba(255,200,255,0.5))'}}
@@ -96,7 +101,7 @@ const Login = () => {
           label="Password" 
           onChange={(e) => {
             formik.handleChange(e)
-            setAuthorize(true);
+          
           }}
           val={formik.values.password}/>
          
@@ -109,7 +114,9 @@ const Login = () => {
           </div> */}
          
             <button type="submit" className="w-100 bg-warning py-2 rounded-2 mx-auto mt-3">Submit</button>
-         
+            <button type="button"
+             onClick={() => {navigate('/register',{replace: true})}}
+             className="w-100 bg-success py-2 rounded-2 mx-auto mt-3">Register</button>
         </form>
       </div>
     </div>

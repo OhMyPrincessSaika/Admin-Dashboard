@@ -26,9 +26,10 @@ export const uploadImages = createAsyncThunk('upload/upload-images',async(data,t
 
 export const deleImages = createAsyncThunk('delete/images',async(id,thunkApi) => {
     try {
+       
         return await uploadService.deleteImages(id);
     }catch(err){
-        thunkApi.rejectWithValue(err);
+        return thunkApi.rejectWithValue(err);
     }
 })
 

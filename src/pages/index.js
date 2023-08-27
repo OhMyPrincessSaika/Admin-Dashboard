@@ -16,3 +16,5 @@ export {default as AddCat} from './AddCat'
 export {default as AddBrand} from './AddBrand'
 export {default as AddProduct} from './AddProduct'
 export {default as ViewOrder} from './ViewOrder';
+export {default as Register} from './Register';
+export {default as Profile} from './Profile'

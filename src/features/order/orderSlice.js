@@ -20,25 +20,25 @@ const initialState = {
 
 
 
-export const getMonthlyOrderIncome = createAsyncThunk('order/get-monthly-income',async(thunkAPI) => {
+export const getMonthlyOrderIncome = createAsyncThunk('order/get-monthly-income',async(token,thunkAPI) => {
     try {
-        return await orderService.getMonthlyOrderIncome();
+        return await orderService.getMonthlyOrderIncome(token);
     }catch(err) {   
         return thunkAPI.rejectWithValue(err);
     }
 })
 
-export const getYearlyOrderIncome = createAsyncThunk('order/get-yearly-income',async(thunkAPI) => {
+export const getYearlyOrderIncome = createAsyncThunk('order/get-yearly-income',async(token,thunkAPI) => {
     try {
-        return await orderService.getYearlyOrderIncome();
+        return await orderService.getYearlyOrderIncome(token);
     }catch(err) {
         return thunkAPI.rejectWithValue(err);
     }
 })
 
-export const getAllOrders = createAsyncThunk('order/get-all-orders',async(thunkAPI) => {
+export const getAllOrders = createAsyncThunk('order/get-all-orders',async(token,thunkAPI) => {
     try {
-        return await orderService.getAllOrders();
+        return await orderService.getAllOrders(token);
     }catch(err) {
         return thunkAPI.rejectWithValue(err);
     }

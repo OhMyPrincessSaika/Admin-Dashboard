@@ -20,6 +20,7 @@ const AddBlog = () => {
   const [loading,setLoading] = React.useState(false);
   const blogId = location.pathname.split('/')[3];
   const [uploadedFiles,setUploadedFiles] = React.useState([]);
+  console.log({uploadedFiles})
   const dispatch = useDispatch();
   React.useEffect(()=> {
     dispatch(getAllBlogCategories());
@@ -103,7 +104,7 @@ const AddBlog = () => {
   //     toast.error('Something went wrong!');
   //   }
   // },[isError,isSuccess,isLoading]) 
- 
+  console.log(uploadedFiles)
   return (
     <div>
         <h3 className="my-4 title">{blogId ? 'Edit' : 'Add'} Blog</h3>
@@ -123,7 +124,7 @@ const AddBlog = () => {
         </div>
         :
         <form action="" onSubmit={formik.handleSubmit}>
-          <UploadWidget setUploadedFiles={setUploadedFiles} name="blog"/>
+          <UploadWidget isRectangle={false} setUploadedFiles={setUploadedFiles} name="blog"/>
           <div className="d-flex align-items-center flex-wrap gap-2">
             {
               uploadedFiles?.map((file,i)=> {
@@ -132,11 +133,12 @@ const AddBlog = () => {
                  <button 
                  type="button"
                  onClick={() => {
-                  dispatch(deleImages(file.public_id))
-                  const image = document.querySelector(`[data-id="${file.public_id}"]`);
-                  if(image && image.parentNode) {
-                    image.parentNode.removeChild(image)
-                  }
+                  dispatch(deleImages(file.public_id));
+                  // const image = document.querySelector(`[data-id="${file.public_id}"]`);
+                  // if(image && image.parentNode) {
+                  //   image.parentNode.removeChild(image)
+                  // }
+                  setUploadedFiles((prev) => prev.filter((data) => file.public_id !== data.public_id))
                  }}
                  className="position-absolute bg-dark text-white border-0" 
                  style={{top:'2%',right:'4%',borderRadius:'5px'}}
